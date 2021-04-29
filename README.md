@@ -1,2 +1,2 @@
 # twithook
-Twitter scrapper that launches webhooks
+Twitter scraper that launches webhooks
