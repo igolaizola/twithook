@@ -61,10 +61,16 @@ func (p *process) run(ctx context.Context, top time.Time, user, filter string) (
 		if tweet.Error != nil {
 			return top, tweet.Error
 		}
+		// Update most recent tweet timestamp
 		if tweet.TimeParsed.After(top) {
 			top = tweet.TimeParsed
 		}
+		// Tweets come ordered by timestamp, stop if is older than last mark
 		if !tweet.TimeParsed.After(last) {
+			// Pinned tweets aren't ordered by timestamp
+			if tweet.IsPin {
+				continue
+			}
 			return top, nil
 		}
 		if !strings.Contains(strings.ToLower(tweet.Text), filter) {
